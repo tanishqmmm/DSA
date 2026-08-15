@@ -1,5 +1,6 @@
 class Solution {
 public:
+//kk
     bool check(vector<int>& nums) {
         int i;
         int n=nums.size();
