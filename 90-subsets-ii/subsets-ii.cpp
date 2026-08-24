@@ -1,35 +1,31 @@
 class Solution {
 public:
+    void solve(int index, const vector<int>& arr,
+               vector<int>& temp, set<vector<int>>& ans) {
 
-    void solve(int index, vector<int>& nums,
-               vector<int>& temp,
-               vector<vector<int>>& ans) {
-
-        ans.push_back(temp);
-
-        for(int i = index; i < nums.size(); i++) {
-
-            // Skip duplicate choices at the same level
-            if(i > index && nums[i] == nums[i-1])
-                continue;
-
-            temp.push_back(nums[i]);
-
-            solve(i + 1, nums, temp, ans);
-
-            temp.pop_back();
+        if(index == arr.size()) {
+            vector<int> t = temp;
+            sort(t.begin(), t.end());
+            ans.insert(t);
+            return;
         }
+
+        // Take
+        temp.push_back(arr[index]);
+        solve(index + 1, arr, temp, ans);
+        temp.pop_back();
+
+        // Don't take
+        solve(index + 1, arr, temp, ans);
     }
 
-    vector<vector<int>> subsetsWithDup(vector<int>& nums) {
+    vector<vector<int>> subsetsWithDup(vector<int>& arr) {
 
-        sort(nums.begin(), nums.end());
-
-        vector<vector<int>> ans;
+        set<vector<int>> ans;
         vector<int> temp;
 
-        solve(0, nums, temp, ans);
+        solve(0, arr, temp, ans);
 
-        return ans;
+        return vector<vector<int>>(ans.begin(), ans.end());
     }
 };
