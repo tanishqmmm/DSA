@@ -1,31 +1,29 @@
 class Solution {
 public:
-    void solve(int index, int k, int target, vector<int>& temp,
-               vector<vector<int>>& ans) {
-
-        if (k == 0) {
-            if (target == 0)
+    void solve(int pre,vector<int>& temp,vector<vector<int>>& ans,int sum,int k,int n){
+        if(temp.size() == k){
+            if(sum == n){
                 ans.push_back(temp);
+            }
             return;
         }
-
-        if (index > 9 || target <= 0)
-            return;
-
-        // Take
-        temp.push_back(index);
-        solve(index + 1, k - 1, target - index, temp, ans);
-        temp.pop_back();
-
-        // Don't take
-        solve(index + 1, k, target, temp, ans);
+        for(int i=pre+1; i < 10 ; i++){
+            if(sum + i <= n){
+                temp.push_back(i);
+                sum+=i;
+                solve(i,temp,ans,sum,k,n);
+                sum-=i;
+                temp.pop_back();
+            }
+            else{
+                break;
+            }
+        }
     }
     vector<vector<int>> combinationSum3(int k, int n) {
-        vector<vector<int>> ans;
         vector<int> temp;
-
-        solve(1, k, n, temp, ans);
-
+        vector<vector<int>> ans;
+        solve(0,temp,ans,0,k,n);
         return ans;
     }
 };
